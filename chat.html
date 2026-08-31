@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Private Chat — Privacy</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        .chat-create-page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 25px;
+
+        }
+
+
+        .chat-create-card {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 40px;
+
+            border-radius: 28px;
+
+            text-align: center;
+
+            background:
+                rgba(255,255,255,.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            backdrop-filter: blur(25px);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.35);
+
+        }
+
+
+        .chat-icon {
+
+            width: 75px;
+
+            height: 75px;
+
+            margin: 0 auto 20px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 24px;
+
+            font-size: 32px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+        }
+
+
+        .chat-create-card h1 {
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .subtitle {
+
+            color: #aaa2b9;
+
+            font-size: 13px;
+
+            margin-bottom: 30px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .chat-input {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 15px;
+
+            border-radius: 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            background:
+                rgba(0,0,0,.2);
+
+            color: white;
+
+            outline: none;
+
+            font-family: inherit;
+
+        }
+
+
+        .chat-input:focus {
+
+            border-color: #a78bfa;
+
+        }
+
+
+        .create-button {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+        }
+
+
+        .result {
+
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(0,0,0,.2);
+
+        }
+
+
+        .result.show {
+
+            display: block;
+
+        }
+
+
+        .invite-code {
+
+            margin: 15px 0;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            letter-spacing: 5px;
+
+            color: #c4b5fd;
+
+        }
+
+
+        .invite-link {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 11px;
+
+            border-radius: 10px;
+
+            border: none;
+
+            background:
+                rgba(255,255,255,.08);
+
+            color: #ddd;
+
+            font-size: 11px;
+
+        }
+
+
+        .copy-button {
+
+            margin-top: 12px;
+
+            padding: 10px 18px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                rgba(167,139,250,.2);
+
+            color: #c4b5fd;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+        }
+
+
+        .back-button {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            color: #aaa2b9;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+        }
+
+
+        .error {
+
+            color: #fca5a5;
+
+            font-size: 12px;
+
+            margin-top: 15px;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="background"></div>
+
+
+<div class="chat-create-page">
+
+    <div class="chat-create-card">
+
+
+        <div class="chat-icon">
+            🔐
+        </div>
+
+
+        <h1>
+            Create Private Chat
+        </h1>
+
+
+        <p class="subtitle">
+
+            Create a private space and invite
+            someone using a unique one-time link.
+
+        </p>
+
+
+        <input
+            id="chatName"
+            class="chat-input"
+            type="text"
+            maxlength="50"
+            placeholder="Chat name — e.g. Just Us 💜"
+        >
+
+
+        <button
+            id="createButton"
+            class="create-button"
+        >
+            🔐 Create Private Chat
+        </button>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+
+        <div
+            id="result"
+            class="result"
+        >
+
+            <div>
+                Your private invite code
+            </div>
+
+
+            <div
+                id="inviteCode"
+                class="invite-code"
+            >
+            </div>
+
+
+            <input
+                id="inviteLink"
+                class="invite-link"
+                readonly
+            >
+
+
+            <button
+                id="copyButton"
+                class="copy-button"
+            >
+                📋 Copy Private Link
+            </button>
+
+        </div>
+
+
+        <a
+            href="dashboard.html"
+            class="back-button"
+        >
+            ← Back to Privacy
+        </a>
+
+    </div>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/create-chat.js"
+></script>
+
+</body>
+
+</html>
