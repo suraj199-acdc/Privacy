@@ -1,0 +1,487 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Verify Email — Privacy</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        .verify-page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 25px;
+
+        }
+
+
+        .verify-card {
+
+            width: 100%;
+
+            max-width: 440px;
+
+            padding: 40px;
+
+            box-sizing: border-box;
+
+            text-align: center;
+
+            border-radius: 28px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            backdrop-filter: blur(25px);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.35);
+
+        }
+
+
+        .verify-icon {
+
+            width: 78px;
+
+            height: 78px;
+
+            margin: 0 auto 22px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 25px;
+
+            font-size: 34px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+            box-shadow:
+                0 15px 40px
+                rgba(139,92,246,.25);
+
+        }
+
+
+        .verify-card h1 {
+
+            margin: 0 0 10px;
+
+            font-size: 28px;
+
+        }
+
+
+        .verify-description {
+
+            color: #aaa2b9;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        #emailDisplay {
+
+            color: #c4b5fd;
+
+            font-weight: 600;
+
+            word-break: break-word;
+
+        }
+
+
+        .otp-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            margin: 25px 0;
+
+        }
+
+
+        .otp {
+
+            width: 48px;
+
+            height: 58px;
+
+            box-sizing: border-box;
+
+            border-radius: 13px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            background:
+                rgba(0,0,0,.2);
+
+            color: white;
+
+            text-align: center;
+
+            font-size: 22px;
+
+            font-weight: 600;
+
+            outline: none;
+
+        }
+
+
+        .otp:focus {
+
+            border-color: #a78bfa;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139,92,246,.12);
+
+        }
+
+
+        .verify-button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+        }
+
+
+        .verify-button:disabled {
+
+            opacity: .6;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .resend {
+
+            margin-top: 20px;
+
+            color: #aaa2b9;
+
+            font-size: 12px;
+
+        }
+
+
+        .resend button {
+
+            border: none;
+
+            background: none;
+
+            color: #c4b5fd;
+
+            font-family: inherit;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+        }
+
+
+        .resend button:disabled {
+
+            opacity: .5;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .message {
+
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+        }
+
+
+        .message.error {
+
+            color: #fca5a5;
+
+            background:
+                rgba(239,68,68,.08);
+
+        }
+
+
+        .message.success {
+
+            color: #86efac;
+
+            background:
+                rgba(34,197,94,.08);
+
+        }
+
+
+        .back-login {
+
+            display: inline-block;
+
+            margin-top: 25px;
+
+            color: #aaa2b9;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+        }
+
+
+        @media (max-width: 450px) {
+
+            .verify-card {
+
+                padding: 30px 20px;
+
+            }
+
+
+            .otp-container {
+
+                gap: 5px;
+
+            }
+
+
+            .otp {
+
+                width: 43px;
+
+                height: 54px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="background"></div>
+
+
+    <main class="verify-page">
+
+        <section class="verify-card">
+
+
+            <div class="verify-icon">
+                ✉️
+            </div>
+
+
+            <h1>
+                Verify your email
+            </h1>
+
+
+            <p class="verify-description">
+
+                We've sent a verification code to
+
+                <br>
+
+                <span id="emailDisplay">
+                    your email
+                </span>
+
+                <br><br>
+
+                Enter the 6-digit code to continue
+                to your private space.
+
+            </p>
+
+
+            <div
+                class="otp-container"
+                id="otpContainer"
+            >
+
+                <input
+                    class="otp"
+                    maxlength="1"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                >
+
+                <input
+                    class="otp"
+                    maxlength="1"
+                    inputmode="numeric"
+                >
+
+                <input
+                    class="otp"
+                    maxlength="1"
+                    inputmode="numeric"
+                >
+
+                <input
+                    class="otp"
+                    maxlength="1"
+                    inputmode="numeric"
+                >
+
+                <input
+                    class="otp"
+                    maxlength="1"
+                    inputmode="numeric"
+                >
+
+                <input
+                    class="otp"
+                    maxlength="1"
+                    inputmode="numeric"
+                >
+
+            </div>
+
+
+            <button
+                id="verifyButton"
+                class="verify-button"
+            >
+                Verify & Continue
+            </button>
+
+
+            <div class="resend">
+
+                Didn't receive the code?
+
+                <button
+                    id="resendButton"
+                >
+                    Resend code
+                </button>
+
+            </div>
+
+
+            <div
+                id="message"
+                style="display:none;"
+            ></div>
+
+
+            <a
+                href="login.html"
+                class="back-login"
+            >
+                ← Back to login
+            </a>
+
+
+        </section>
+
+    </main>
+
+
+    <script
+        type="module"
+        src="js/verify-otp.js"
+    ></script>
+
+</body>
+
+</html>
+```
