@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard — Privacy</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            min-height: 100vh;
+        }
+
+        .dashboard {
+            width: min(1200px, 92%);
+            margin: auto;
+        }
+
+
+        /* NAV */
+
+        .dashboard-nav {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 22px 0;
+
+        }
+
+
+        .dashboard-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+        }
+
+
+        .dashboard-logo span {
+
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+        }
+
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .profile-button,
+        .settings-button,
+        .logout-button {
+
+            border: 1px solid
+                rgba(255,255,255,0.12);
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: white;
+
+            padding: 9px 13px;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+        }
+
+
+        .logout-button {
+
+            background:
+                rgba(239,68,68,0.12);
+
+        }
+
+
+        /* WELCOME */
+
+        .welcome {
+
+            margin-top: 40px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .welcome h1 {
+
+            font-size:
+                clamp(30px, 5vw, 48px);
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .welcome p {
+
+            color: #aaa2b9;
+
+            font-size: 14px;
+
+        }
+
+
+        /* INVITE */
+
+        .invite-card {
+
+            padding: 28px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(139,92,246,0.18),
+                    rgba(236,72,153,0.12)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .invite-card h2 {
+
+            font-size: 20px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .invite-card p {
+
+            color: #aaa2b9;
+
+            font-size: 12px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .invite-buttons {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .primary-button {
+
+            border: none;
+
+            padding: 12px 18px;
+
+            border-radius: 12px;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+        }
+
+
+        .secondary-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            padding: 12px 18px;
+
+            border-radius: 12px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            font-family: inherit;
+
+            cursor: pointer;
+
+        }
+
+
+        /* SECTION */
+
+        .section-title {
+
+            margin-bottom: 15px;
+
+            font-size: 18px;
+
+        }
+
+
+        .empty {
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .empty-icon {
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .empty h3 {
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .empty p {
+
+            color: #aaa2b9;
+
+            font-size: 12px;
+
+        }
+
+
+        /* PROFILE */
+
+        .profile-mini {
+
+            margin-top: 30px;
+
+            padding: 20px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .profile-mini h3 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .profile-info {
+
+            display: flex;
+
+            gap: 12px;
+
+            align-items: center;
+
+        }
+
+
+        .avatar {
+
+            width: 48px;
+            height: 48px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+            font-size: 20px;
+
+        }
+
+
+        .profile-info strong {
+
+            display: block;
+
+        }
+
+
+        .profile-info small {
+
+            color: #aaa2b9;
+
+        }
+
+
+        @media(max-width:600px) {
+
+            .nav-right {
+
+                gap: 5px;
+
+            }
+
+            .profile-button,
+            .settings-button {
+
+                display: none;
+
+            }
+
+            .dashboard-nav {
+
+                padding-top: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="background"></div>
+
+
+<div class="dashboard">
+
+
+    <!-- NAV -->
+
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+
+            <span>💜</span>
+
+            Privacy
+
+        </div>
+
+
+        <div class="nav-right">
+
+            <button
+                class="profile-button"
+                id="profileButton"
+            >
+                👤 Profile
+            </button>
+
+
+            <button
+                class="settings-button"
+                id="settingsButton"
+            >
+                ⚙️
+            </button>
+
+
+            <button
+                class="logout-button"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+        <h1>
+            Hey, <span id="displayName">...</span> 👋
+        </h1>
+
+        <p>
+            Welcome to your private space.
+        </p>
+
+    </section>
+
+
+    <!-- PRIVATE INVITE -->
+
+    <section class="invite-card">
+
+        <h2>
+            🔗 Start a private conversation
+        </h2>
+
+        <p>
+            Create a private invitation or join
+            someone else's conversation.
+        </p>
+
+
+        <div class="invite-buttons">
+
+            <button
+                class="primary-button"
+                id="createChatButton"
+            >
+                + Create Private Chat
+            </button>
+
+
+            <button
+                class="secondary-button"
+                id="joinChatButton"
+            >
+                🔗 Join with Code
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHATS -->
+
+    <section>
+
+        <h2 class="section-title">
+            Your conversations
+        </h2>
+
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                💬
+            </div>
+
+            <h3>
+                No conversations yet
+            </h3>
+
+            <p>
+                Create a private chat or join one
+                using an invitation code.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section class="profile-mini">
+
+        <h3>
+            Your profile
+        </h3>
+
+
+        <div class="profile-info">
+
+            <div class="avatar">
+                <span id="profileEmoji">💜</span>
+            </div>
+
+
+            <div>
+
+                <strong id="profileName">
+                    Loading...
+                </strong>
+
+                <small id="profileUsername">
+                    @username
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/dashboard.js"
+></script>
+
+</body>
+
+</html>

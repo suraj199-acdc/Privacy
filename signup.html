@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account — Privacy</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        .auth-page {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+
+            padding: 40px;
+
+            background: rgba(255,255,255,0.07);
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            border-radius: 28px;
+
+            backdrop-filter: blur(25px);
+
+            box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .auth-logo-icon {
+            width: 60px;
+            height: 60px;
+
+            display: grid;
+            place-items: center;
+
+            margin: 0 auto 12px;
+
+            border-radius: 18px;
+
+            background: linear-gradient(135deg,#8b5cf6,#ec4899);
+
+            font-size: 28px;
+        }
+
+        .auth-logo h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .auth-logo p {
+            color: #aaa2b9;
+            font-size: 13px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 12px;
+
+            color: #d8d2df;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            outline: none;
+
+            background: rgba(0,0,0,0.2);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 13px;
+        }
+
+        .form-group input:focus {
+            border-color: #a78bfa;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 50px;
+        }
+
+        .show-password {
+            position: absolute;
+
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            cursor: pointer;
+
+            color: #aaa2b9;
+
+            font-size: 13px;
+        }
+
+        .signup-submit {
+            width: 100%;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            background: linear-gradient(135deg,#8b5cf6,#ec4899);
+
+            margin-top: 8px;
+
+            transition: 0.25s;
+        }
+
+        .signup-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .signup-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+
+            margin-bottom: 18px;
+
+            padding: 11px 13px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+        .message.error {
+            display: block;
+
+            background: rgba(239,68,68,0.15);
+
+            color: #fca5a5;
+        }
+
+        .message.success {
+            display: block;
+
+            background: rgba(34,197,94,0.15);
+
+            color: #86efac;
+        }
+
+        .auth-footer {
+            text-align: center;
+
+            margin-top: 22px;
+
+            font-size: 12px;
+
+            color: #aaa2b9;
+        }
+
+        .auth-footer a {
+            color: #c4b5fd;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+        .terms {
+            font-size: 10px;
+
+            color: #817a90;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            line-height: 1.6;
+        }
+
+        @media(max-width:500px) {
+
+            .auth-page {
+                padding: 15px;
+            }
+
+            .auth-card {
+                padding: 28px 22px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+
+            <div class="auth-logo-icon">
+                💜
+            </div>
+
+            <h1>Create your account</h1>
+
+            <p>Your private space starts here.</p>
+
+        </div>
+
+
+        <div id="message" class="message"></div>
+
+
+        <form id="signupForm">
+
+            <div class="form-group">
+
+                <label for="displayName">
+                    Display name
+                </label>
+
+                <input
+                    type="text"
+                    id="displayName"
+                    placeholder="What should people call you?"
+                    required
+                    maxlength="50"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="@yourusername"
+                    required
+                    minlength="3"
+                    maxlength="20"
+                    pattern="[A-Za-z0-9_]+"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="you@example.com"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Create a strong password"
+                        required
+                        minlength="8"
+                    >
+
+                    <span
+                        class="show-password"
+                        id="showPassword"
+                    >
+                        👁️
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Enter your password again"
+                    required
+                    minlength="8"
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="signup-submit"
+                id="signupButton"
+            >
+                Create my Privacy account
+            </button>
+
+        </form>
+
+
+        <div class="terms">
+            By creating an account, you agree to use Privacy responsibly
+            and respect other users.
+        </div>
+
+
+        <div class="auth-footer">
+
+            Already have an account?
+
+            <a href="login.html">
+                Log in
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module" src="js/auth.js"></script>
+
+</body>
+</html>
