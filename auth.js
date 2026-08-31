@@ -1,3 +1,4 @@
+```javascript
 import { supabase } from "./supabase-config.js";
 
 
@@ -21,7 +22,9 @@ function showMessage(message, type) {
    SIGNUP
 ========================================= */
 
-const signupForm = document.getElementById("signupForm");
+const signupForm =
+    document.getElementById("signupForm");
+
 
 if (signupForm) {
 
@@ -34,6 +37,8 @@ if (signupForm) {
     const passwordInput =
         document.getElementById("password");
 
+
+    /* Show / hide password */
 
     if (showPassword) {
 
@@ -58,154 +63,209 @@ if (signupForm) {
     }
 
 
-    signupForm.addEventListener("submit", async (event) => {
+    /* Signup */
 
-        event.preventDefault();
+    signupForm.addEventListener(
+        "submit",
+        async (event) => {
 
-
-        const displayName =
-            document.getElementById("displayName")
-                .value.trim();
-
-        const username =
-            document.getElementById("username")
-                .value.trim()
-                .toLowerCase();
-
-        const email =
-            document.getElementById("email")
-                .value.trim();
-
-        const password =
-            document.getElementById("password")
-                .value;
-
-        const confirmPassword =
-            document.getElementById("confirmPassword")
-                .value;
+            event.preventDefault();
 
 
-        if (password !== confirmPassword) {
-
-            showMessage(
-                "Passwords do not match.",
-                "error"
-            );
-
-            return;
-        }
+            const displayName =
+                document
+                    .getElementById("displayName")
+                    .value
+                    .trim();
 
 
-        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-
-            showMessage(
-                "Username can only contain letters, numbers and underscores.",
-                "error"
-            );
-
-            return;
-        }
+            const username =
+                document
+                    .getElementById("username")
+                    .value
+                    .trim()
+                    .toLowerCase();
 
 
-        signupButton.disabled = true;
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
 
-        signupButton.textContent =
-            "Creating account...";
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
 
 
-        try {
+            const confirmPassword =
+                document
+                    .getElementById("confirmPassword")
+                    .value;
 
-            /*
-             * Check username first
-             */
 
-            const { data: existingUsername } =
-                await supabase
+            /* Validation */
+
+            if (!displayName) {
+
+                showMessage(
+                    "Please enter your display name.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!username) {
+
+                showMessage(
+                    "Please choose a username.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+
+                showMessage(
+                    "Username can only contain letters, numbers and underscores.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (password.length < 6) {
+
+                showMessage(
+                    "Password must be at least 6 characters.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (password !== confirmPassword) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            signupButton.disabled = true;
+
+            signupButton.textContent =
+                "Creating account...";
+
+
+            try {
+
+                /* =====================================
+                   CHECK USERNAME
+                ===================================== */
+
+                const {
+                    data: existingUsername,
+                    error: usernameError
+                } = await supabase
                     .from("profiles")
                     .select("id")
                     .eq("username", username)
                     .maybeSingle();
 
 
-            if (existingUsername) {
+                if (usernameError) {
 
-                throw new Error(
-                    "That username is already taken."
-                );
+                    throw usernameError;
 
-            }
+                }
 
 
-            /*
-             * Create Supabase Auth account
-             */
+                if (existingUsername) {
 
-            const { data, error } =
-                await supabase.auth.signUp({
+                    throw new Error(
+                        "That username is already taken."
+                    );
 
-                    email,
-                    password
+                }
+
+
+                /* =====================================
+                   CREATE AUTH ACCOUNT
+                ===================================== */
+
+                const {
+                    data,
+                    error
+                } = await supabase.auth.signUp({
+
+                    email: email,
+
+                    password: password,
+
+                    options: {
+
+                        data: {
+
+                            username: username,
+
+                            display_name: displayName
+
+                        }
+
+                    }
 
                 });
 
 
-            if (error) {
+                if (error) {
 
-                throw error;
+                    throw error;
 
-            }
-
-
-            const user = data.user;
+                }
 
 
-            if (!user) {
+                if (!data.user) {
 
-                throw new Error(
-                    "Account creation failed."
+                    throw new Error(
+                        "Account could not be created."
+                    );
+
+                }
+
+
+                /* =====================================
+                   SAVE EMAIL FOR OTP PAGE
+                ===================================== */
+
+                sessionStorage.setItem(
+                    "privacy_verification_email",
+                    email
                 );
 
-            }
 
-
-            /*
-             * Create profile
-             */
-
-            const { error: profileError } =
-                await supabase
-                    .from("profiles")
-                    .insert({
-
-                        id: user.id,
-
-                        username,
-
-                        display_name: displayName
-
-                    });
-
-
-            if (profileError) {
-
-                console.error(profileError);
-
-                throw new Error(
-                    "Account created but profile setup failed."
-                );
-
-            }
-
-
-            /*
-             * Check whether Supabase gave us
-             * an active session.
-             */
-
-            if (data.session) {
+                /* =====================================
+                   SUCCESS
+                ===================================== */
 
                 showMessage(
-                    "Account created! Opening Privacy...",
+                    "Account created! Check your email for the verification code 💜",
                     "success"
                 );
 
@@ -213,15 +273,23 @@ if (signupForm) {
                 setTimeout(() => {
 
                     window.location.href =
-                        "dashboard.html";
+                        "verify-otp.html";
 
-                }, 1000);
+                }, 900);
 
-            } else {
+
+            } catch (error) {
+
+                console.error(
+                    "SIGNUP ERROR:",
+                    error
+                );
+
 
                 showMessage(
-                    "Account created! Check your email to confirm your account.",
-                    "success"
+                    error.message ||
+                    "Something went wrong while creating your account.",
+                    "error"
                 );
 
 
@@ -232,26 +300,8 @@ if (signupForm) {
 
             }
 
-
-        } catch (error) {
-
-            console.error(error);
-
-            showMessage(
-                error.message ||
-                "Something went wrong.",
-                "error"
-            );
-
-
-            signupButton.disabled = false;
-
-            signupButton.textContent =
-                "Create my Privacy account";
-
         }
-
-    });
+    );
 
 }
 
@@ -269,43 +319,53 @@ if (loginForm) {
     const loginButton =
         document.getElementById("loginButton");
 
+
     const showPassword =
         document.getElementById("showPassword");
+
 
     const passwordInput =
         document.getElementById("password");
 
 
-    /*
-     * Show / hide password
-     */
+    /* Show / hide password */
 
     if (showPassword) {
 
-        showPassword.addEventListener("click", () => {
+        showPassword.addEventListener(
+            "click",
+            () => {
 
-            if (passwordInput.type === "password") {
+                if (
+                    passwordInput.type ===
+                    "password"
+                ) {
 
-                passwordInput.type = "text";
+                    passwordInput.type =
+                        "text";
 
-                showPassword.textContent = "🙈";
+                    showPassword.textContent =
+                        "🙈";
 
-            } else {
+                } else {
 
-                passwordInput.type = "password";
+                    passwordInput.type =
+                        "password";
 
-                showPassword.textContent = "👁️";
+                    showPassword.textContent =
+                        "👁️";
+
+                }
 
             }
-
-        });
+        );
 
     }
 
 
-    /*
-     * Login
-     */
+    /* =====================================
+       LOGIN
+    ===================================== */
 
     loginForm.addEventListener(
         "submit",
@@ -315,12 +375,28 @@ if (loginForm) {
 
 
             const email =
-                document.getElementById("email")
-                    .value.trim();
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
 
             const password =
-                document.getElementById("password")
+                document
+                    .getElementById("password")
                     .value;
+
+
+            if (!email || !password) {
+
+                showMessage(
+                    "Please enter your email and password.",
+                    "error"
+                );
+
+                return;
+
+            }
 
 
             loginButton.disabled = true;
@@ -331,12 +407,15 @@ if (loginForm) {
 
             try {
 
-                const { data, error } =
-                    await supabase.auth.signInWithPassword({
+                const {
+                    data,
+                    error
+                } = await supabase.auth
+                    .signInWithPassword({
 
-                        email,
+                        email: email,
 
-                        password
+                        password: password
 
                     });
 
@@ -368,12 +447,16 @@ if (loginForm) {
                     window.location.href =
                         "dashboard.html";
 
-                }, 700);
+                }, 500);
 
 
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    "LOGIN ERROR:",
+                    error
+                );
+
 
                 showMessage(
                     error.message ||
@@ -393,12 +476,14 @@ if (loginForm) {
     );
 
 
-    /*
-     * Forgot password
-     */
+    /* =====================================
+       FORGOT PASSWORD
+    ===================================== */
 
     const forgotPassword =
-        document.getElementById("forgotPassword");
+        document.getElementById(
+            "forgotPassword"
+        );
 
 
     if (forgotPassword) {
@@ -411,8 +496,10 @@ if (loginForm) {
 
 
                 const email =
-                    document.getElementById("email")
-                        .value.trim();
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
 
 
                 if (!email) {
@@ -429,16 +516,19 @@ if (loginForm) {
 
                 try {
 
-                    const { error } =
-                        await supabase.auth
-                            .resetPasswordForEmail(
-                                email,
-                                {
-                                    redirectTo:
-                                        window.location.origin +
-                                        "/reset-password.html"
-                                }
-                            );
+                    const {
+                        error
+                    } = await supabase.auth
+                        .resetPasswordForEmail(
+                            email,
+                            {
+
+                                redirectTo:
+                                    window.location.origin +
+                                    "/Privacy/reset-password.html"
+
+                            }
+                        );
 
 
                     if (error) {
@@ -449,15 +539,19 @@ if (loginForm) {
 
 
                     showMessage(
-                        "Password reset email sent.",
+                        "Password reset email sent 💜",
                         "success"
                     );
 
 
                 } catch (error) {
 
+                    console.error(error);
+
+
                     showMessage(
-                        error.message,
+                        error.message ||
+                        "Unable to send password reset email.",
                         "error"
                     );
 
@@ -469,3 +563,4 @@ if (loginForm) {
     }
 
 }
+```
