@@ -8,13 +8,17 @@ import { supabase } from "./supabase-config.js";
 
 function showMessage(message, type) {
 
-    const box = document.getElementById("message");
+    const box =
+        document.getElementById("message");
 
     if (!box) return;
 
     box.textContent = message;
 
-    box.className = "message " + type;
+    box.className =
+        "message " + type;
+
+    box.style.display = "block";
 }
 
 
@@ -38,32 +42,46 @@ if (signupForm) {
         document.getElementById("password");
 
 
-    /* Show / hide password */
+    /* =====================================
+       SHOW / HIDE PASSWORD
+    ===================================== */
 
     if (showPassword) {
 
-        showPassword.addEventListener("click", () => {
+        showPassword.addEventListener(
+            "click",
+            () => {
 
-            if (passwordInput.type === "password") {
+                if (
+                    passwordInput.type ===
+                    "password"
+                ) {
 
-                passwordInput.type = "text";
+                    passwordInput.type =
+                        "text";
 
-                showPassword.textContent = "🙈";
+                    showPassword.textContent =
+                        "🙈";
 
-            } else {
+                } else {
 
-                passwordInput.type = "password";
+                    passwordInput.type =
+                        "password";
 
-                showPassword.textContent = "👁️";
+                    showPassword.textContent =
+                        "👁️";
+
+                }
 
             }
-
-        });
+        );
 
     }
 
 
-    /* Signup */
+    /* =====================================
+       SIGNUP
+    ===================================== */
 
     signupForm.addEventListener(
         "submit",
@@ -91,7 +109,8 @@ if (signupForm) {
                 document
                     .getElementById("email")
                     .value
-                    .trim();
+                    .trim()
+                    .toLowerCase();
 
 
             const password =
@@ -106,7 +125,9 @@ if (signupForm) {
                     .value;
 
 
-            /* Validation */
+            /* =====================================
+               VALIDATION
+            ===================================== */
 
             if (!displayName) {
 
@@ -132,7 +153,11 @@ if (signupForm) {
             }
 
 
-            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            if (
+                !/^[a-zA-Z0-9_]+$/.test(
+                    username
+                )
+            ) {
 
                 showMessage(
                     "Username can only contain letters, numbers and underscores.",
@@ -168,7 +193,8 @@ if (signupForm) {
             }
 
 
-            signupButton.disabled = true;
+            signupButton.disabled =
+                true;
 
             signupButton.textContent =
                 "Creating account...";
@@ -186,7 +212,10 @@ if (signupForm) {
                 } = await supabase
                     .from("profiles")
                     .select("id")
-                    .eq("username", username)
+                    .eq(
+                        "username",
+                        username
+                    )
                     .maybeSingle();
 
 
@@ -207,7 +236,7 @@ if (signupForm) {
 
 
                 /* =====================================
-                   CREATE AUTH ACCOUNT
+                   CREATE ACCOUNT
                 ===================================== */
 
                 const {
@@ -223,9 +252,11 @@ if (signupForm) {
 
                         data: {
 
-                            username: username,
+                            username:
+                                username,
 
-                            display_name: displayName
+                            display_name:
+                                displayName
 
                         }
 
@@ -251,7 +282,7 @@ if (signupForm) {
 
 
                 /* =====================================
-                   SAVE EMAIL FOR OTP PAGE
+                   SAVE EMAIL
                 ===================================== */
 
                 sessionStorage.setItem(
@@ -261,11 +292,36 @@ if (signupForm) {
 
 
                 /* =====================================
-                   SUCCESS
+                   IF EMAIL CONFIRMATION IS REQUIRED
+                ===================================== */
+
+                if (!data.session) {
+
+                    showMessage(
+                        "Account created! Check your email for your verification code 💜",
+                        "success"
+                    );
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "verify-otp.html";
+
+                    }, 900);
+
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   IF SUPABASE RETURNS A SESSION
                 ===================================== */
 
                 showMessage(
-                    "Account created! Check your email for the verification code 💜",
+                    "Account created successfully! Opening Privacy 💜",
                     "success"
                 );
 
@@ -273,9 +329,9 @@ if (signupForm) {
                 setTimeout(() => {
 
                     window.location.href =
-                        "verify-otp.html";
+                        "dashboard.html";
 
-                }, 900);
+                }, 700);
 
 
             } catch (error) {
@@ -293,7 +349,8 @@ if (signupForm) {
                 );
 
 
-                signupButton.disabled = false;
+                signupButton.disabled =
+                    false;
 
                 signupButton.textContent =
                     "Create my Privacy account";
@@ -328,7 +385,9 @@ if (loginForm) {
         document.getElementById("password");
 
 
-    /* Show / hide password */
+    /* =====================================
+       SHOW / HIDE PASSWORD
+    ===================================== */
 
     if (showPassword) {
 
@@ -378,7 +437,8 @@ if (loginForm) {
                 document
                     .getElementById("email")
                     .value
-                    .trim();
+                    .trim()
+                    .toLowerCase();
 
 
             const password =
@@ -399,7 +459,8 @@ if (loginForm) {
             }
 
 
-            loginButton.disabled = true;
+            loginButton.disabled =
+                true;
 
             loginButton.textContent =
                 "Logging in...";
@@ -465,7 +526,8 @@ if (loginForm) {
                 );
 
 
-                loginButton.disabled = false;
+                loginButton.disabled =
+                    false;
 
                 loginButton.textContent =
                     "Log in";
@@ -546,7 +608,10 @@ if (loginForm) {
 
                 } catch (error) {
 
-                    console.error(error);
+                    console.error(
+                        "PASSWORD RESET ERROR:",
+                        error
+                    );
 
 
                     showMessage(
